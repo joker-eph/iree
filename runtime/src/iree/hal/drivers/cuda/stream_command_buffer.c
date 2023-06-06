@@ -284,6 +284,8 @@ static iree_status_t iree_hal_cuda_stream_command_buffer_fill_buffer(
   target_offset += iree_hal_buffer_byte_offset(target_buffer);
   CUdeviceptr dst = target_device_buffer + target_offset;
   size_t num_elements = length / pattern_length;
+  fprintf(stderr, "fill %p to %zu of pattern %zub\n", (void*)dst,
+          (size_t)length, (size_t)pattern_length);
   switch (pattern_length) {
     case 4: {
       CUDA_RETURN_IF_ERROR(
@@ -372,6 +374,8 @@ static iree_status_t iree_hal_cuda_stream_command_buffer_copy_buffer(
   source_offset += iree_hal_buffer_byte_offset(source_buffer);
   CUdeviceptr dst = target_device_buffer + target_offset;
   CUdeviceptr src = source_device_buffer + source_offset;
+  fprintf(stderr, "copy %p -> %p %zu\n", (void*)src, (void*)dst,
+          (size_t)length);
   CUDA_RETURN_IF_ERROR(command_buffer->context->syms,
                        cuMemcpyAsync(dst, src, length, command_buffer->stream),
                        "cuMemcpyAsync");

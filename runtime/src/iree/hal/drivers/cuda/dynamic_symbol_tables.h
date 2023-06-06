@@ -50,6 +50,8 @@ CU_PFN_DECL(cuMemHostGetDevicePointer, CUdeviceptr*, void*, unsigned int)
 CU_PFN_DECL(cuMemPoolCreate, CUmemoryPool*, const CUmemPoolProps*)
 CU_PFN_DECL(cuMemPoolDestroy, CUmemoryPool)
 CU_PFN_DECL(cuMemPoolSetAccess, CUmemoryPool, const CUmemAccessDesc*, size_t)
+// DO NOT SUBMIT
+CU_PFN_DECL(cuMemAllocAsync, CUdeviceptr*, size_t, CUstream)
 CU_PFN_DECL(cuMemPoolGetAttribute, CUmemoryPool, CUmemPool_attribute, void*)
 CU_PFN_DECL(cuMemPoolSetAttribute, CUmemoryPool, CUmemPool_attribute, void*)
 CU_PFN_DECL(cuMemPoolTrimTo, CUmemoryPool, size_t)

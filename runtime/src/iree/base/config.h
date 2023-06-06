@@ -235,6 +235,7 @@ typedef IREE_DEVICE_SIZE_T iree_device_size_t;
 #endif  // NDEBUG
 #endif  // !IREE_VM_EXECUTION_TRACING_ENABLE
 
+#define IREE_VM_EXECUTION_TRACING_FORCE_ENABLE 1
 #if !defined(IREE_VM_EXECUTION_TRACING_FORCE_ENABLE)
 // Forces tracing of VM execution by default ignoring runtime flags that may
 // otherwise control the behavior. This can be used to enable tracing in tools

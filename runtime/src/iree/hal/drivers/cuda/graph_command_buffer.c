@@ -397,6 +397,8 @@ static iree_status_t iree_hal_cuda_graph_command_buffer_fill_buffer(
       .height = 1,
       .value = dword_pattern,
   };
+  fprintf(stderr, "fill %p to %zu of pattern %zub\n", (void*)params.dst,
+          (size_t)length, (size_t)pattern_length);
   // Serialize all the nodes for now.
   CUgraphNode dep[] = {command_buffer->last_node};
   size_t numNode = command_buffer->last_node ? 1 : 0;
@@ -492,6 +494,8 @@ static iree_status_t iree_hal_cuda_graph_command_buffer_copy_buffer(
       .Height = 1,
       .Depth = 1,
   };
+  fprintf(stderr, "copy %p -> %p %zu\n", (void*)params.srcDevice,
+          (void*)params.dstDevice, params.WidthInBytes);
 
   // Serialize all the nodes for now.
   CUgraphNode dep[] = {command_buffer->last_node};

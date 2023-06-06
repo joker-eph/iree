@@ -267,12 +267,14 @@ static void iree_hal_cuda_buffer_free(iree_hal_cuda_context_wrapper_t* context,
   switch (buffer_type) {
     case IREE_HAL_CUDA_BUFFER_TYPE_DEVICE: {
       IREE_TRACE_ZONE_APPEND_TEXT(z0, "cuMemFree");
+      fprintf(stderr, "free device %p\n", (void*)device_ptr);
       CUDA_IGNORE_ERROR(context->syms, cuMemFree(device_ptr));
       break;
     }
     case IREE_HAL_CUDA_BUFFER_TYPE_HOST: {
       IREE_TRACE_ZONE_APPEND_TEXT(z0, "cuMemFreeHost");
       CUDA_IGNORE_ERROR(context->syms, cuMemFreeHost(host_ptr));
+      fprintf(stderr, "free host %p\n", (void*)device_ptr);
       break;
     }
     case IREE_HAL_CUDA_BUFFER_TYPE_HOST_REGISTERED: {
@@ -372,6 +374,9 @@ static iree_status_t iree_hal_cuda_allocator_allocate_buffer(
     }
   }
   IREE_TRACE_ZONE_END(z0);
+
+  fprintf(stderr, "alloc %p size %zu\n", (void*)device_ptr,
+          (size_t)allocation_size);
 
   iree_hal_buffer_t* buffer = NULL;
   if (iree_status_is_ok(status)) {

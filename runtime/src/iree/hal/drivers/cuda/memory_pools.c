@@ -49,6 +49,21 @@ static iree_status_t iree_hal_cuda_create_memory_pool(
                             &params.release_threshold),
       "cuMemPoolSetAttribute");
 
+  // DO NOT SUBMIT
+  CUmemAccessDesc descs[1] = {
+      {
+          .flags = CU_MEM_ACCESS_FLAGS_PROT_READWRITE,
+          .location =
+              {
+                  .type = CU_MEM_LOCATION_TYPE_DEVICE,
+                  .id = context->cu_device,
+              },
+      },
+  };
+  CUDA_RETURN_IF_ERROR(context->syms,
+                       cuMemPoolSetAccess(pool, &descs, IREE_ARRAYSIZE(descs)),
+                       "cuMemPoolSetAccess");
+
   if (iree_status_is_ok(status)) {
     *out_pool = pool;
   } else {
@@ -216,6 +231,8 @@ iree_status_t iree_hal_cuda_memory_pools_alloca(
       cuMemAllocFromPoolAsync(&device_ptr, (size_t)allocation_size, memory_pool,
                               stream),
       "cuMemAllocFromPoolAsync");
+  fprintf(stderr, "alloca %p size %zu\n", (void*)device_ptr,
+          (size_t)allocation_size);
 
   // Wrap the allocated CUDA buffer in a HAL buffer.
   iree_hal_buffer_t* buffer = NULL;
@@ -255,6 +272,7 @@ iree_status_t iree_hal_cuda_memory_pools_dealloca(
 
   // Try to schedule the buffer for freeing.
   CUdeviceptr device_ptr = iree_hal_cuda_buffer_device_pointer(buffer);
+  fprintf(stderr, "dealloca %p\n", (void*)device_ptr);
   iree_status_t status =
       CU_RESULT_TO_STATUS(pools->context->syms,
                           cuMemFreeAsync(device_ptr, stream), "cuMemFreeAsync");

@@ -526,6 +526,7 @@ static iree_status_t iree_hal_cuda_device_queue_alloca(
   if (iree_status_is_ok(status)) {
     IREE_RETURN_IF_ERROR(iree_hal_semaphore_list_signal(signal_semaphore_list));
   }
+
   return status;
 }
 
