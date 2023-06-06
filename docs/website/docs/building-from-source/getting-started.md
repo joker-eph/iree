@@ -133,7 +133,8 @@ settings can improve compile and link times substantially.
     We recommend using the `RelWithDebInfo` build type by default for a good
     balance of debug info and performance. The `Debug`, `Release`, and
     `MinSizeRel` build types are useful in more specific cases. Note that
-    several useful LLVM debugging features are only available in `Debug` builds.
+    several useful LLVM debugging features are only available when assertions
+    are enabled (default in `Debug` builds).
     See the
     [official CMake documentation](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html)
     for general details.
